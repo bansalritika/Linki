@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linki - Responsive Website</title>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+<link href="css/bootstrap-grid.min.css" type="text/css" rel="stylesheet"/>
+<script src="jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>(function ($) {
+	$.fn.countTo = function (options) {
+		options = options || {};
+		
+		return $(this).each(function () {
+			// set options for current element
+			var settings = $.extend({}, $.fn.countTo.defaults, {
+				from:            $(this).data('from'),
+				to:              $(this).data('to'),
+				speed:           $(this).data('speed'),
+				refreshInterval: $(this).data('refresh-interval'),
+				decimals:        $(this).data('decimals')
+			}, options);
+			
+			// how many times to update the value, and how much to increment the value on each update
+			var loops = Math.ceil(settings.speed / settings.refreshInterval),
+				increment = (settings.to - settings.from) / loops;
+			
+			// references & variables that will change with each update
+			var self = this,
+				$self = $(this),
+				loopCount = 0,
+				value = settings.from,
+				data = $self.data('countTo') || {};
+			
+			$self.data('countTo', data);
+			
+			// if an existing interval can be found, clear it first
+			if (data.interval) {
+				clearInterval(data.interval);
+			}
+			data.interval = setInterval(updateTimer, settings.refreshInterval);
+			
+			// initialize the element with the starting value
+			render(value);
+			
+			function updateTimer() {
+				value += increment;
+				loopCount++;
+				
+				render(value);
+				
+				if (typeof(settings.onUpdate) == 'function') {
+					settings.onUpdate.call(self, value);
+				}
+				
+				if (loopCount >= loops) {
+					// remove the interval
+					$self.removeData('countTo');
+					clearInterval(data.interval);
+					value = settings.to;
+					
+					if (typeof(settings.onComplete) == 'function') {
+						settings.onComplete.call(self, value);
+					}
+				}
+			}
+			
+			function render(value) {
+				var formattedValue = settings.formatter.call(self, value, settings);
+				$self.html(formattedValue);
+			}
+		});
+	};
+	
+	$.fn.countTo.defaults = {
+		from: 0,               // the number the element should start at
+		to: 0,                 // the number the element should end at
+		speed: 1000,           // how long it should take to count between the target numbers
+		refreshInterval: 100,  // how often the element should be updated
+		decimals: 0,           // the number of decimal places to show
+		formatter: formatter,  // handler for formatting the value before rendering
+		onUpdate: null,        // callback method for every time the element is updated
+		onComplete: null       // callback method for when the element finishes updating
+	};
+	
+	function formatter(value, settings) {
+		return value.toFixed(settings.decimals);
+	}
+}(jQuery));
+
+jQuery(function ($) {
+  // custom formatting example
+  $('.count-number').data('countToOptions', {
+	formatter: function (value, options) {
+	  return value.toFixed(options.decimals).replace(/\B(?=(?:\d{3})+(?!\d))/g, ',');
+	}
+  });
+  
+  // start all the timers
+  $('.timer').each(count);  
+  
+  function count(options) {
+	var $this = $(this);
+	options = $.extend({}, options || {}, $this.data('countToOptions') || {});
+	$this.countTo(options);
+  }
+});</script>
+<link href="ihover/src/ihover.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body class="back">
+    <script>
+        AOS.init();
+      </script>
+    <nav>
+        <div class="container">
+            <h2 class="log">
+                Linki
+            </h2>
+            <div class="search-bar">
+                <i class="uil uil-search"></i>
+                <input type="search" placeholder="Search for creators, inspirations, projects">
+            </div>
+            <div class="create">
+                <label class="btn btn-primary" for="create-post">Create</label>
+                <div class="navbar-right">
+                <div class="profile-photo">
+                    <img src="./images/profile-1.jpg" class="profile-cursor" onclick="toggleMenu()">
+                </div>
+            </div>
+            <div class="profile-menu-wrap" id="profileMenu">
+                <div class="profile-menu">
+                    <div class="user-info">
+                        <img src="images/profile-1.jpg">
+                        <div>
+                            <h3>Elna Nouroi</h3>
+                            <a href="index.html">Go back to Home Page.</a>
+                        </div>
+                    </div>
+                    <hr>
+                    <a href="#" class="profile-menu-link">
+                        <img src="images/feedback.png" >
+                        <p>Give Feedback</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="profile-menu-link">
+                        <img src="images/setting.png" >
+                        <p>Settings & Privacy</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="profile-menu-link">
+                        <img src="images/help-web-button.png" >
+                        <p>Help & Supprt</p>
+                        <span>></span>
+                    </a>
+                    <a href="#" class="profile-menu-link">
+                        <img src="images/logout.png" >
+                        <p>Logout</p>
+                        <span>></span>
+                    </a>
+                </div>
+            </div>
+            </div>
+        </div>
+    </nav>
+    <h5 class="lap">Explore</h5>
+ <p class="shiya"><a href="index.html" >Home</a> / Explore</p>
+ 
+ <div class="row">
+<div class="col-md-10 offset-1">
+<div class="row">
+<div class="col-md-6">
+<div data-aos="fade-right">
+<img class="tops" src="./images/logo.png"/>
+</div></div>
+<div class="col-md-6">
+
+<div data-aos="fade-left"> <p class="tika">Linki</p>
+<h1 id="one">Who Are We</h1>
+<p class="dictum">Linki Portfolio is a powerful tool that allows you to showcase your skills and accomplishments in a Profesional manner. It provides a platform for professionals to highlight their work experience, education, certifications, and other achievements.</p>
+<ul style="disk" class="elit">
+ <li class="amet">One vision.</li>  
+ <li class="amet"> One global team.</li>  
+ <li class="amet">Monumental task</li> 
+ <li class="amet">Building a world-changing platform.</li>  
+ </div></ul>
+</div>
+</div>
+</div>
+</div></div><br><br><br><br><br><br>
+
+
+
+<div class="row watch p-3">
+<div class="col-md-12">
+<div data-aos="fade-up">
+<p class="map ">OUR NUMBERS</p>
+<h1 id="feat">The Numbers Don't Lie</h1><br></div>
+<div data-aos="fade-up"><p class="we">With the increasing competition in the job market, having a well-crafted LINKI.</p></div>
+<br><br><br>
+<div class="row">
+<div class="col-md-10 offset-1">
+<div class="row">
+<div class="col-md-3"><p class="la">$ <span class="timer count-number" data-to="20" data-speed="1500"></span>B+</p><p class="du">In Community Assets</p></div>
+<div class="col-md-3"><p class="la">$ <span class="timer count-number" data-to="500" data-speed="1500"></span>K+</p><p class="du">Happy Linki Users</p></div>
+<div class="col-md-3"><p class="la">$ <span class="timer count-number" data-to="250" data-speed="1500"></span>M+</p><p class="du">Yield Paid In Last 12 Months</p></div>
+<div class="col-md-3"><p class="la">$ <span class="timer count-number" data-to="150" data-speed="1500"></span>K+</p><p class="du">Community BTC</p></div>
+</div>
+</div>
+</div></div>
+</div>
+
+
+<div class="row" >
+<div class="col-md-10 offset-1">
+<div data-aos="fade-up"><h1 id="feat">Reasons To <br>Choose Linki</h1></div><br><br><br>
+<div data-aos="fade-up"><div class="row">
+<div class="col-md-10 offset-1">
+<div class="row">
+<div class="col-md-4"><img class="reum" src="real.jpg"/>
+<div class="five">
+<p class="service">Recruiters Use It</p>
+<p class="ut">Great way to connect with recruiters. Up to 87% of recruiters use Linki.</p>
+</div>
+</div>
+<div class="col-md-4"><img class="reum" src="exch.jpg"/>
+<div class="five">
+<p class="service">Join Groups</p>
+<p class="ut">Interest-based and professional groups:help you grow your network and connect with people.</p>
+</div>
+</div>
+<div class="col-md-4"><img class="reum"src="find.jpg"/>
+<div class="five">
+<p class="service">Build Your Brand</p>
+<p class="ut">An Excellent platform for developing and strengthening your brand.</p>
+</div>
+</div>
+</div>
+</div></div></div></div></div><br><br><br>
+
+<div class="profile-foote">
+    <div class="sidebar-useful-links">
+        <a href="#">About</a>
+        <a href="#">Accessibility</a>
+        <a href="#">Help Center</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Advertising</a>
+        <a href="#">More</a>
+
+        <div class="copyright-msg">
+            <img src="./images/logo.png">
+            <p>Linkedup &#169; 2022. All right reserved</p>
+        </div>
+    </div>
+</div>
+
+</body>
+    </html>
